@@ -1,25 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/header';
+import CasesDetails from './components/casesDetails';
+import BarChart from './components/barChart';
+import LineChart from './components/lineChart';
+import Grid from '@material-ui/core/Grid';
+import CountriesTable from './components/table';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+      <CasesDetails />
+      <Grid container justify="center">
+        <Grid item sm={8}>
+          <BarChart />
+        </Grid>
+        {/* <Grid item sm={8}>
+          <LineChart />
+        </Grid> */}
+      </Grid>
+      <CountriesTable />
+    </>
   );
 }
 
 export default App;
+//
