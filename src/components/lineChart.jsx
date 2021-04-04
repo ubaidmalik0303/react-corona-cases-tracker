@@ -7,39 +7,45 @@ import { GlobalContext } from '../ContextApi/GlobalContext';
 const LineChart = () => {
 
     const { data, history } = useContext(GlobalContext);
-    const [cases, setCases] = useState([]);
-    const [dates, setDates] = useState([]);
-    const [deaths, setDeaths] = useState([])
+    var [cases, setCases] = useState([]);
+    var [dates, setDates] = useState([]);
+    var [deaths, setDeaths] = useState([])
+    var [recovered, setRecovered] = useState([])
 
-    // const getistory = () => {
-    //     if (history) {
-    //         history.map((val) => {
-    //             cases.push(val.cases.total)
-    //             setCases(cases)
-    //         })
-    //     }
-    //     console.log(cases)
-    // }
+    const getHistory = () => {
+        var date = 0;
+        var filterCases = [];
+        var filterDeaths = [];
+        var filterRecovered = [];
+        var filterDates = [];
+        history.map((val, i) => {
+            if (date !== history[i].day) {
+                filterCases.push(val.cases.total)
+                filterDates.push(val.day)
+                filterDeaths.push(val.deaths.total)
+                filterRecovered.push(val.cases.recovered)
+                date = val.day;
+            }
+        })
+        filterCases.reverse()
+        filterDeaths.reverse()
+        filterRecovered.reverse()
+        filterDates.reverse()
+        setCases(filterCases)
+        setDeaths(filterDeaths)
+        setRecovered(filterRecovered)
+        setDates(filterDates)
+    }
 
     useEffect(() => {
-        if (history) {
-            history.map((val) => {
-                cases.push(val.cases.total)
-                dates.push(val.day)
-                deaths.push(val.deaths.total)
-            })
-            dates.reverse()
-            cases.reverse()
-            deaths.reverse()
-        }
-        setDates(dates)
+        return getHistory();
+
     }, [history])
 
     return (
         <div>
-            {console.log("Daily Cases => ", dates)}
-            <h2>Line Example</h2>
-            {dates[0] ? <Line data={{
+            <h2>History Chart</h2>
+            <Line data={!cases[0] ? {} : {
                 labels: dates,
                 datasets: [
                     {
@@ -64,30 +70,50 @@ const LineChart = () => {
                         data: cases
                     },
                     {
-                        label: 'Total Cases',
+                        label: 'Total Deaths',
                         fill: false,
                         lineTension: 0.1,
-                        backgroundColor: 'rgba(75,192,192,0.4)',
-                        borderColor: 'rgba(75,192,192,1)',
+                        backgroundColor: '#bf4551',
+                        borderColor: '#bf4551',
                         borderCapStyle: 'butt',
                         borderDash: [],
                         borderDashOffset: 0.0,
                         borderJoinStyle: 'miter',
-                        pointBorderColor: 'rgba(75,192,192,1)',
+                        pointBorderColor: '#bf4551',
                         pointBackgroundColor: '#fff',
                         pointBorderWidth: 5,
                         pointHoverRadius: 5,
-                        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                        pointHoverBorderColor: 'rgba(220,220,220,1)',
+                        pointHoverBackgroundColor: '#bf4551',
+                        pointHoverBorderColor: '#bf4551',
                         pointHoverBorderWidth: 2,
                         pointRadius: 1,
                         pointHitRadius: 10,
-                        data: deaths,
+                        data: deaths
+                    },
+                    {
+                        label: 'Total Recovered',
+                        fill: false,
+                        lineTension: 0.1,
+                        backgroundColor: 'green',
+                        borderColor: 'green',
+                        borderCapStyle: 'butt',
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        borderJoinStyle: 'miter',
+                        pointBorderColor: 'green',
+                        pointBackgroundColor: '#fff',
+                        pointBorderWidth: 5,
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColor: 'green',
+                        pointHoverBorderColor: 'green',
+                        pointHoverBorderWidth: 2,
+                        pointRadius: 1,
+                        pointHitRadius: 10,
+                        data: recovered
                     },
                 ]
             }}
-                height={400}
-            /> : null}
+            />
         </div>
     );
 

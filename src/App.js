@@ -11,14 +11,24 @@ function App() {
     <>
       <Header />
       <CasesDetails />
-      <Grid container justify="center">
-        <Grid item sm={8}>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '20px 0',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+        <div style={{
+          width: '90%',
+        }}>
           <BarChart />
-        </Grid>
-        {/* <Grid item sm={8}>
+        </div>
+        <div style={{
+          width: '90%',
+        }}>
           <LineChart />
-        </Grid> */}
-      </Grid>
+        </div>
+      </div>
       <CountriesTable />
     </>
   );

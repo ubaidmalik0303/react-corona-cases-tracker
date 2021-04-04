@@ -10,7 +10,6 @@ const BarChart = () => {
 
     return (
         <div>
-            {console.log(data)}
             <h2 style={{
                 marginTop: 40,
                 marginBottom: 20,
@@ -56,10 +55,10 @@ const BarChart = () => {
                         },
                     ]
                 }}
-                height={400}
                 options={{
                     maintainAspectRatio: false
                 }}
+                height={300}
             />
         </div>
     );

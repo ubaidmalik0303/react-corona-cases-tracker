@@ -7,6 +7,7 @@ export const GlobalProvider = ({ children }) => {
     const [country, setCountry] = useState('all');
     const [data, setData] = useState(null);
     const [allCountries, setAllCountries] = useState([])
+    const [history, setHistory] = useState([])
 
     useEffect(() => {
         const getData = async () => {
@@ -30,6 +31,28 @@ export const GlobalProvider = ({ children }) => {
     }, [country])
 
     useEffect(() => {
+        setHistory([])
+        const getData = async () => {
+            await fetch(`https://covid-193.p.rapidapi.com/history?country=${country}`, {
+                "method": "GET",
+                "headers": {
+                    "x-rapidapi-key": "eff085456fmsh54f64ff826c8252p1f3473jsn55184427a145",
+                    "x-rapidapi-host": "covid-193.p.rapidapi.com"
+                }
+            })
+                .then(response => response.json())
+                .then((data) => {
+                    setHistory(data.response)
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        }
+
+        return getData();
+    }, [data])
+
+    useEffect(() => {
         const getData = async () => {
             await fetch(`https://covid-193.p.rapidapi.com/statistics`, {
                 "method": "GET",
@@ -40,7 +63,6 @@ export const GlobalProvider = ({ children }) => {
             })
                 .then(response => response.json())
                 .then((data) => {
-                    console.log("All Country Data => ", data)
                     setAllCountries(data.response)
                 })
                 .catch(err => {
@@ -59,7 +81,9 @@ export const GlobalProvider = ({ children }) => {
                 data,
                 setData,
                 allCountries,
-                setAllCountries
+                setAllCountries,
+                history,
+                setHistory,
             }}
         >
             {children}
